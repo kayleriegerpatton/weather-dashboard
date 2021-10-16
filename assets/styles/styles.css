@@ -2,20 +2,36 @@
   box-sizing: border-box;
   margin: 0;
   border: 1px solid black;
+  font-size: 18px;
+}
+
+.title {
+  text-align: center;
 }
 
 .main-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
 }
 
-/* .form-container {
+h2,
+h3 {
+  padding: 10px;
+}
+.search-form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  flex-grow: 1;
-} */
+}
+
+#search-city {
+  margin: 5px;
+}
+
+.btn {
+  /* margin: 5px; */
+  /* background-color ; */
+}
 
 .weather-containers {
   display: flex;
@@ -23,31 +39,59 @@
   flex-wrap: wrap;
   flex-grow: 1;
 }
-/* 
-.current-weather-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-} */
 
 .current-weather-elements {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+
+.current-weather {
+  padding-left: 10px;
 }
 
 .forecasts-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
+}
+
+.forecast-card {
+  padding: 0px 10px 20px;
 }
 
 /* MOBILE STYLES */
 @media screen and (max-width: 576px) {
+  .main-container {
+    flex-direction: column;
+  }
+
   /* center search form */
+  .form-container {
+    margin: auto;
+  }
   /* flex column the current info and img */
+  .current-weather-elements {
+    justify-content: center;
+  }
+
   /* flex column the forecast cards */
+  .forecasts-container {
+    flex-direction: column;
+  }
+
+  .forecast-card {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+    margin: auto;
+  }
+
   /* center all headings */
+  h2,
+  h3 {
+    text-align: center;
+  }
 }
