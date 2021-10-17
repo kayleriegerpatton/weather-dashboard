@@ -1,7 +1,8 @@
 const searchBtn = $("#searchBtn");
 const searchInput = $("#search-city");
 const searchForm = $(".search-form");
-const apiKey = "5458002b60131eeab00c4853ceb6235b";
+const API_KEY = "5458002b60131eeab00c4853ceb6235b";
+const BASE_URL = "https://api.openweathermap.org/data/2.5/";
 
 const onLoad = function () {
   // render search history from LS
@@ -16,22 +17,32 @@ const renderError = function () {
   searchForm.append(formError);
 };
 
+const handleResponse = function (response) {
+  return response.json();
+};
+
+const checkData = function (data) {
+  console.log(data);
+};
+
 const onSearch = function (event) {
   event.preventDefault();
 
   // get city (user input)
   let city = $(searchInput).val();
 
-  //   get API URL for city data
-  let cityAPI = `api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+  //   construct API URL for city data
+  const url = `${BASE_URL}weather?q=${city}&appid=${API_KEY}`;
+
   // validate city
   if (city) {
-    //   if error is visible, remove
+    //   if error is displayed, remove
     if ($("#search-error").length) {
       $("#search-error").remove();
     }
     //   get API data
-    fetchAPI(cityAPI);
+    // fetchAPI(url);
+    fetch(url).then(handleResponse).then(checkData);
   } else {
     //   render error
     renderError();
@@ -41,17 +52,6 @@ const onSearch = function (event) {
   //   add to LS
 };
 
-const fetchAPI = () => {
-  const handleResponse = function (response) {
-    return response.json();
-  };
-
-  const checkData = function (data) {
-    console.log(data);
-  };
-
-  fetch().then(handleResponse).then(checkData);
-};
 //   render search history from LS
 // get data from LS
 
