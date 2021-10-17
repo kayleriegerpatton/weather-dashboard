@@ -29,6 +29,12 @@ const handleData = function (data) {
 
   fetch(url).then(handleResponse).then(console.log(data));
 };
+// get card data
+//   render current weather card
+//   render forecast cards
+//   add to LS
+//   render search history from LS
+// get data from LS
 
 const onSearch = function (event) {
   event.preventDefault();
@@ -36,7 +42,7 @@ const onSearch = function (event) {
   // get city (user input)
   let city = $(searchInput).val();
 
-  //   construct API URL for city data
+  // construct API URL for city data
   const url = `${BASE_URL}weather?q=${city}&appid=${API_KEY}`;
 
   // validate city
@@ -51,13 +57,7 @@ const onSearch = function (event) {
     //   render error
     renderError();
   }
-  //   render current weather card
-  //   render forecast cards
-  //   add to LS
 };
-
-//   render search history from LS
-// get data from LS
 
 $(searchBtn).click(onSearch);
 $(document).ready(onLoad);

@@ -33,6 +33,7 @@ h3 {
 
 .form-title {
   font-size: 1.5rem;
+  /* text-align: center; */
 }
 
 .search-form {
@@ -124,11 +125,12 @@ h3 {
 }
 
 .forecast-card {
-  padding: 0px 10px 20px;
+  margin: 0px 10px 20px;
 }
 
 .card-img-top {
   width: 150px;
+  margin: auto;
 }
 
 /* MOBILE STYLES */
