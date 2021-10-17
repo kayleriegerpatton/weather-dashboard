@@ -8,7 +8,7 @@
 * {
   box-sizing: border-box;
   margin: 0;
-  border: 1px solid rgba(0, 0, 0, 0.233);
+  border: 1px solid rgb(236, 236, 236);
   font-size: 18px;
 }
 
@@ -40,6 +40,10 @@ h3 {
   /* background-color ; */
 }
 
+.btn-primary {
+  background-color: var(--duke-blue);
+}
+
 .list-group {
   padding: 10px;
 }
@@ -67,10 +71,24 @@ h3 {
 }
 
 .bg {
-  color: white;
   padding: 2px 5px;
   margin: 5px;
   border-radius: 5px;
+}
+
+#low-UV {
+  color: #ffffff;
+  background-color: green;
+}
+
+#mod-UV {
+  color: #0000;
+  background-color: #ffd95b;
+}
+
+#high-UV {
+  color: #ffffff;
+  background-color: #c40000;
 }
 
 .forecasts-container {
