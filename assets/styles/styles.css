@@ -1,7 +1,14 @@
+:root {
+  --midnight-blue: #140152ff;
+  --duke-blue: #0d00a4ff;
+  --dark-purple: #200a6c;
+  --lilac: #d4c4fb;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.233);
   font-size: 18px;
 }
 
@@ -29,8 +36,12 @@ h3 {
 }
 
 .btn {
-  /* margin: 5px; */
+  margin: 5px;
   /* background-color ; */
+}
+
+.list-group {
+  padding: 10px;
 }
 
 .weather-containers {
@@ -38,6 +49,10 @@ h3 {
   flex-direction: column;
   flex-wrap: wrap;
   flex-grow: 1;
+}
+
+.current-weather-container {
+  padding: 5px;
 }
 
 .current-weather-elements {
@@ -51,11 +66,19 @@ h3 {
   padding-left: 10px;
 }
 
+.bg {
+  color: white;
+  padding: 2px 5px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
 .forecasts-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
+  /* flex-grow: 1; */
 }
 
 .forecast-card {
@@ -79,14 +102,14 @@ h3 {
 
   /* flex column the forecast cards */
   .forecasts-container {
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: flex-start;
   }
 
   .forecast-card {
     display: flex;
     flex-direction: column;
     padding-bottom: 30px;
-    margin: auto;
   }
 
   /* center all headings */
