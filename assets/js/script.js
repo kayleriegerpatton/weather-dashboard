@@ -21,8 +21,13 @@ const handleResponse = function (response) {
   return response.json();
 };
 
-const checkData = function (data) {
-  console.log(data);
+const handleData = function (data) {
+  //   get city name
+  const cityName = data.name;
+  //   construct URL for weather
+  const url = `${BASE_URL}onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
+
+  fetch(url).then(handleResponse).then(console.log(data));
 };
 
 const onSearch = function (event) {
@@ -41,8 +46,7 @@ const onSearch = function (event) {
       $("#search-error").remove();
     }
     //   get API data
-    // fetchAPI(url);
-    fetch(url).then(handleResponse).then(checkData);
+    fetch(url).then(handleResponse).then(handleData);
   } else {
     //   render error
     renderError();
