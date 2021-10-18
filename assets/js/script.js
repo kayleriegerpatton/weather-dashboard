@@ -19,19 +19,18 @@ const renderError = function () {
 };
 
 const renderWeatherCards = function (weatherData) {
-  // get card data
-
   //   format date
   const date = moment.unix(weatherData.current.dt).format("MM/DD/YYYY");
-  const weatherArray = [weatherData.current.weather];
-  console.log(weatherArray[3]);
+
+  //   get weather icon code for URL
+  const iconCode = weatherData.current.weather[0].icon;
 
   //   render current weather card
   const currentWeather = `<h2>City Name (${date})</h2>
   <div class="current-weather-elements">
     <div>
       <img
-        src="https://openweathermap.org/img/w/10n.png"
+        src="https://openweathermap.org/img/w/${iconCode}.png"
         alt=""
         class="current-weather-img"
       />
@@ -45,7 +44,19 @@ const renderWeatherCards = function (weatherData) {
   </div>`;
   // append to current weather container
   currentWeatherContainer.append(currentWeather);
-  //   render forecast cards
+
+  //  render forecast cards
+  //    set forecast array
+  const forecastArray = weatherData.daily;
+
+  //   NEED HELP HERE
+  //    filter forecast array to get i=1-5 (0=current)
+  const isFiveDayForecast = function (day, index) {
+    return index > 0;
+  };
+
+  const fiveDayArray = forecastArray.filter(isFiveDayForecast);
+  console.log(fiveDayArray);
 };
 
 const handleResponse = function (response) {
@@ -58,6 +69,7 @@ const handleData = function (data) {
   } else {
     //   get city name
     const cityName = data.name;
+
     //   construct URL for weather
     const url = `${BASE_URL}onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
     fetch(url).then(handleResponse).then(renderWeatherCards);
