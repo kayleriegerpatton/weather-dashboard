@@ -3,6 +3,7 @@ const searchInput = $("#search-city");
 const searchForm = $(".search-form");
 const API_KEY = "5458002b60131eeab00c4853ceb6235b";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
+const currentWeatherContainer = $(".current-weather-container");
 
 const onLoad = function () {
   // render search history from LS
@@ -17,8 +18,37 @@ const renderError = function () {
   searchForm.append(formError);
 };
 
+const renderWeatherCards = function (weatherData) {
+  // get card data
+
+  //   format date
+  const date = moment.unix(weatherData.current.dt).format("MM/DD/YYYY");
+  const weatherArray = [weatherData.current.weather];
+  console.log(weatherArray[3]);
+
+  //   render current weather card
+  const currentWeather = `<h2>City Name (${date})</h2>
+  <div class="current-weather-elements">
+    <div>
+      <img
+        src="https://openweathermap.org/img/w/10n.png"
+        alt=""
+        class="current-weather-img"
+      />
+    </div>
+    <div class="current-weather">
+      <p>Temp: ${weatherData.current.temp}°C</p>
+      <p>Wind: ${weatherData.current.wind_speed}m/s</p>
+      <p>Humidity: ${weatherData.current.humidity}%</p>
+      <p>UV Index:<span class="bg" id="low-UV">${weatherData.current.uvi}</span></p>
+    </div>
+  </div>`;
+  // append to current weather container
+  currentWeatherContainer.append(currentWeather);
+  //   render forecast cards
+};
+
 const handleResponse = function (response) {
-  //   console.log(response);
   return response.json();
 };
 
@@ -29,14 +59,11 @@ const handleData = function (data) {
     //   get city name
     const cityName = data.name;
     //   construct URL for weather
-    const url = `${BASE_URL}onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
-    fetch(url).then(handleResponse).then(console.log(data));
+    const url = `${BASE_URL}onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
+    fetch(url).then(handleResponse).then(renderWeatherCards);
   }
 };
-//   render weather cards
-// get card data
-//   render current weather card
-//   render forecast cards
+
 //   add to LS
 //   render search history from LS
 // get data from LS
