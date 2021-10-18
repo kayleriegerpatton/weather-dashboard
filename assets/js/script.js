@@ -18,17 +18,22 @@ const renderError = function () {
 };
 
 const handleResponse = function (response) {
+  //   console.log(response);
   return response.json();
 };
 
 const handleData = function (data) {
-  //   get city name
-  const cityName = data.name;
-  //   construct URL for weather
-  const url = `${BASE_URL}onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
-
-  fetch(url).then(handleResponse).then(console.log(data));
+  if (data.message === "city not found") {
+    renderError();
+  } else {
+    //   get city name
+    const cityName = data.name;
+    //   construct URL for weather
+    const url = `${BASE_URL}onecall?lat=${data.coord.lat}&lon=${data.coord.lon}&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
+    fetch(url).then(handleResponse).then(console.log(data));
+  }
 };
+//   render weather cards
 // get card data
 //   render current weather card
 //   render forecast cards
@@ -42,15 +47,16 @@ const onSearch = function (event) {
   // get city (user input)
   let city = $(searchInput).val();
 
-  // construct API URL for city data
-  const url = `${BASE_URL}weather?q=${city}&appid=${API_KEY}`;
-
   // validate city
   if (city) {
     //   if error is displayed, remove
     if ($("#search-error").length) {
       $("#search-error").remove();
     }
+
+    // construct API URL for city data
+    const url = `${BASE_URL}weather?q=${city}&appid=${API_KEY}`;
+
     //   get API data
     fetch(url).then(handleResponse).then(handleData);
   } else {
