@@ -4,6 +4,7 @@ const searchForm = $(".search-form");
 const API_KEY = "5458002b60131eeab00c4853ceb6235b";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
 const currentWeatherContainer = $(".current-weather-container");
+const forecastsContainer = $(".forecasts-container");
 
 const onLoad = function () {
   // render search history from LS
@@ -45,7 +46,6 @@ const renderWeatherCards = function (weatherData) {
   // append to current weather container
   currentWeatherContainer.append(currentWeather);
 
-  //  render forecast cards
   //    set forecast array
   const forecastArray = weatherData.daily;
 
@@ -56,7 +56,15 @@ const renderWeatherCards = function (weatherData) {
   };
 
   const fiveDayArray = forecastArray.filter(isFiveDayForecast);
-  console.log(fiveDayArray);
+
+  //  render forecast cards
+  const renderForecasts = function () {
+    //   map through forecastArray
+    const forecastCards = forecastArray.map(constructForecast).join("");
+
+    //   append to forecastsContainer
+    forecastsContainer.append(forecastCards);
+  };
 };
 
 const handleResponse = function (response) {
