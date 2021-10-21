@@ -3,85 +3,72 @@ const searchInput = $("#search-city");
 const searchForm = $(".search-form");
 const API_KEY = "5458002b60131eeab00c4853ceb6235b";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
+const weatherCardsContainer = $(".weather-containers");
 const currentWeatherContainer = $(".current-weather-container");
 const forecastsContainer = $(".forecasts-container");
-const weatherCardsContainer = $(".weather-containers");
 
-const getCurrentData = function (name, forecastData){
-    return {
-        name: name,
-        temperature: forecastData.current.temp,
-        wind: forecastData.current.wind_speed,
-        humidity: forecastData.current.humidity,
-        uvi: forecastData.current.uvi,
-        date: getFormattedDate(forecastData.current.dt),
-        iconCode: forecastData.current.weather[0].icon,
-    }
-}
+const getCurrentData = function (name, forecastData) {
+  return {
+    name: name,
+    temperature: forecastData.current.temp,
+    wind: forecastData.current.wind_speed,
+    humidity: forecastData.current.humidity,
+    uvi: forecastData.current.uvi,
+    date: getFormattedDate(forecastData.current.dt),
+    iconCode: forecastData.current.weather[0].icon,
+  };
+};
 
-const getIconCode = function (){
-return;
-}
+const getIconCode = function () {
+  return;
+};
 
-const getFormattedDate = function (unixTimestamp){
-    return moment.unix(unixTimestamp).format("DD/MM/YYY")
-}
+const getFormattedDate = function (unixTimestamp) {
+  return moment.unix(unixTimestamp).format("MMM Do");
+};
 
 const getForecastData = function (forecastData) {
-    const callback = function (each){
-        return {
-            date: "(3/30/2021)",
-            temperature: 123.45,
-            wind: each.wind_speed,
-            humidity: each.humidity,
-            iconCode: each.weather[0].icon,
-        }
-    }
-    return forecastData.daily.slice(1, 6).map(callback);
-}
+  const callback = function (each) {
+    return {
+      date: getFormattedDate(each.dt),
+      temperature: each.temp.max,
+      wind: each.wind_speed,
+      humidity: each.humidity,
+      iconCode: each.weather[0].icon,
+    };
+  };
+  return forecastData.daily.slice(1, 6).map(callback);
+};
 
 // for given city name, request API lat & long
 const getWeatherData = async function (cityName) {
-    // construct API URL for city data
-    const currentDataUrl = `${BASE_URL}weather?q=${city}&appid=${API_KEY}`;
+  // construct API URL for city data
+  const currentDataUrl = `${BASE_URL}weather?q=${cityName}&appid=${API_KEY}`;
 
-    // fetch current data
-    const currentDataResponse = await fetch(url);
-    const currentData = await response.json();
+  // fetch current data
+  const currentDataResponse = await fetch(currentDataUrl);
+  const currentData = await currentDataResponse.json();
 
-    // get values for URL
-    const lat = currentData.coord.lat;
-    const lon = currentData.coord.lon;
-    const name = currentData.name;
+  // get values for URL
+  const lat = currentData.coord.lat;
+  const lon = currentData.coord.lon;
+  const name = currentData.name;
 
-    // construct forecast URL
-    const forecastURL = `${BASE_URL}onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`
+  // construct forecast URL
+  const forecastDataURL = `${BASE_URL}onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
 
-    // fetch forecast data
-    const forecastDataResponse = await fretch(forecastDataUrl);
-    const forecastData = await forecastDataResponse.json();
-    const current = getCurrentData(name, forecastData);
-    return {
-        current: {
-            name: name,
-            temperature: forecastData.current.temp,
-            wind: forecastData.current.wind_speed,
-            humidity: forecastData.current.humidity,
-            uvi: forecastData.current.uvi,
-            date: "(3/30/2021)",
-            iconCode: "04n",
-        }
-        forecast: [
-            {
+  // fetch forecast data
+  const forecastDataResponse = await fetch(forecastDataURL);
+  const forecastData = await forecastDataResponse.json();
 
-            }
-        ]
+  const current = getCurrentData(name, forecastData);
+  const forecast = getForecastData(forecastData);
 
-    }
-
+  return {
+    current: current,
+    forecast: forecast,
+  };
 };
-
-
 
 const renderError = function () {
   const formError = `<div id="search-error" class="form-text">
@@ -93,12 +80,6 @@ const renderError = function () {
 };
 
 const renderCurrentWeather = function (currentData) {
-  //   get weather icon code for URL
-  const iconCode = weatherData.current.weather[0].icon;
-
-  //   format date
-  const date = moment.unix(weatherData.current.dt).format("MM/DD/YYYY");
-
   //   render current weather card
   const currentWeather = `<h2>${currentData.name} | ${currentData.date}</h2>
     <div class="current-weather-elements">
@@ -116,41 +97,44 @@ const renderCurrentWeather = function (currentData) {
         <p>UV Index:<span class="bg" id="low-UV">${currentData.uvi}</span></p>
         </div>
     </div>`;
+
   // append to current weather container
   currentWeatherContainer.append(currentWeather);
 };
 
 const renderForecast = function (forecastData) {
-  const constructForecastCard = function (each) {};
-  return `<div class="card forecast-card" style="width: 10rem">
-    <h3 class="card-heading">${each.date}</h3>
-    <img
-    src="https://openweathermap.org/img/w/${each.iconCode}.png"
-    class="card-img-top"
-    alt=""
-    />
-    <div class="card-body">
-    <p class="card-text">Temp: ${each.temperature} &deg;F</p>
-    <p class="card-text">Humidity: ${each.humidity}%</p>
-    <p class="card-text">Wind: ${each.wind}</p>
-    </div>
-    </div>`;
-  const forecastCards = forecastData.map(constructForecastCard).join("");
+  console.log(forecastData);
+  //   const constructForecastCard = function (each) {
+  //     return `<div class="card forecast-card" style="width: 10rem">
+  //     <h3 class="card-heading">${each.date}</h3>
+  //     <img
+  //     src="https://openweathermap.org/img/w/${each.iconCode}.png"
+  //     class="card-img-top"
+  //     alt=""
+  //     />
+  //     <div class="card-body">
+  //     <p class="card-text">Temp: ${each.temperature}°C</p>
+  //     <p class="card-text">Humidity: ${each.humidity}%</p>
+  //     <p class="card-text">Wind: ${each.wind}</p>
+  //     </div>
+  //     </div>`;
+  //   };
 
-  const forecastCardsContainer = `<div class="forecasts-container">${forecastCards}<div/>`;
+  //   const forecastCards = forecastData.map(constructForecastCard).join("");
 
-  weatherCardsContainer.append(forecastCardsContainer);
+  //   forecastsContainer.append(forecastCards);
+
+  //   const forecastCardsContainer = `<div class="forecasts-container">${forecastCards}<div/>`;
+
+  //   weatherCardsContainer.append(forecastCardsContainer);
 };
 
 const renderWeatherCards = function (weatherData) {
   renderCurrentWeather(weatherData.current);
   renderForecast(weatherData.forecast);
-  //   getIconURL(weatherData);
-  //   formatDate(weatherData);
 };
 
-
-const onSearch = function (event) {
+const onSearch = async function (event) {
   event.preventDefault();
 
   // get city (user input)
@@ -163,21 +147,26 @@ const onSearch = function (event) {
       $("#search-error").remove();
     }
 
-   // get data from API
-   const weatherData = await getWeatherData();
+    // await data from API using city name
+    const weatherData = await getWeatherData(city);
 
-   renderWeatherCards(weatherData);
+    //    clear any weather displayed
+    currentWeatherContainer.empty();
+    forecastsContainer.empty();
 
-//    save city to LS
- 
+    // render weather cards with new data
+    renderWeatherCards(weatherData);
+
+    //    save city to LS
   } else {
-    //   render error
+    //   render city search error
     renderError();
   }
 };
- const onLoad = function (){
-    //  render from LS
- }
+
+const onLoad = function () {
+  //  render from LS
+};
 
 $(searchBtn).click(onSearch);
 $(document).ready(onLoad);
