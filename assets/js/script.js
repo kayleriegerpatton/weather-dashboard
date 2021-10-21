@@ -19,10 +19,6 @@ const getCurrentData = function (name, forecastData) {
   };
 };
 
-const getIconCode = function () {
-  return;
-};
-
 const getFormattedDate = function (unixTimestamp) {
   return moment.unix(unixTimestamp).format("MMM Do");
 };
@@ -103,30 +99,29 @@ const renderCurrentWeather = function (currentData) {
 };
 
 const renderForecast = function (forecastData) {
-  console.log(forecastData);
-  //   const constructForecastCard = function (each) {
-  //     return `<div class="card forecast-card" style="width: 10rem">
-  //     <h3 class="card-heading">${each.date}</h3>
-  //     <img
-  //     src="https://openweathermap.org/img/w/${each.iconCode}.png"
-  //     class="card-img-top"
-  //     alt=""
-  //     />
-  //     <div class="card-body">
-  //     <p class="card-text">Temp: ${each.temperature}°C</p>
-  //     <p class="card-text">Humidity: ${each.humidity}%</p>
-  //     <p class="card-text">Wind: ${each.wind}</p>
-  //     </div>
-  //     </div>`;
-  //   };
+  const constructForecastCard = function (each) {
+    return `<div class="card forecast-card" style="width: 10rem">
+      <h3 class="card-heading text-center">${each.date}</h3>
+      <img
+      src="https://openweathermap.org/img/w/${each.iconCode}.png"
+      class="card-img-top"
+      alt=""
+      />
+      <div class="card-body">
+      <p class="card-text">Temp: ${each.temperature}°C</p>
+      <p class="card-text">Humidity: ${each.humidity}%</p>
+      <p class="card-text">Wind: ${each.wind}</p>
+      </div>
+      </div>`;
+  };
 
-  //   const forecastCards = forecastData.map(constructForecastCard).join("");
+  const forecastCards = forecastData.map(constructForecastCard).join("");
 
-  //   forecastsContainer.append(forecastCards);
+  forecastsContainer.append(forecastCards);
 
-  //   const forecastCardsContainer = `<div class="forecasts-container">${forecastCards}<div/>`;
+  // const forecastCardsContainer = `<div class="forecasts-container">${forecastCards}<div/>`;
 
-  //   weatherCardsContainer.append(forecastCardsContainer);
+  // weatherCardsContainer.append(forecastCardsContainer);
 };
 
 const renderWeatherCards = function (weatherData) {
