@@ -90,7 +90,8 @@ h3 {
   margin: 0px 10px;
   border: 1px solid var(--indigo);
   border-radius: 5px;
-  background-color: white;
+  background: #ffffff;
+  background: linear-gradient(90deg, #ffffff 40%, var(--indigo) 95%);
 }
 
 .current-weather-elements {
@@ -120,7 +121,7 @@ h3 {
 }
 
 #mod-UV {
-  color: #0000;
+  color: rgb(0, 0, 0);
   background-color: #ffd95b;
 }
 
@@ -161,6 +162,12 @@ h3 {
   color: var(--pink);
 }
 
+@media screen and (max-width: 775px) {
+  .current-weather-container {
+    background: none #ffffff;
+  }
+}
+
 /* MOBILE STYLES */
 @media screen and (max-width: 576px) {
   .main-container {
@@ -173,6 +180,7 @@ h3 {
     margin-bottom: 20px;
     padding: 20px;
   }
+
   /* flex column the current info and img */
   .current-weather-elements {
     justify-content: center;
