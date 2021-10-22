@@ -91,18 +91,24 @@ const renderError = function () {
   searchForm.append(formError);
 };
 
-const getUVIClass = function (uvi) {
+const getUVIClass = function (currentData) {
+  const uvi = currentData.uvi;
   if (uvi < 3) {
     return "low-UV";
-  } else if (uvi >= 8) {
-    return "high-UV";
-  } else {
+  } else if (uvi >= 3 && uvi <= 5.99) {
     return "mod-UV";
+  } else if ((uvi >= 6) & (uvi <= 7.99)) {
+    return "high-UV";
+  } else if (uvi >= 8 && uvi <= 10.99) {
+    return "very-high-UV";
+  } else if (uvi >= 11) {
+    return "extreme-UV";
   }
 };
 
 const renderCurrentWeather = function (currentData) {
   const uviClassName = getUVIClass(currentData);
+  console.log(uviClassName);
 
   //   render current weather card
   const currentWeather = `<h2>${currentData.name}, ${currentData.date}</h2>
@@ -118,7 +124,7 @@ const renderCurrentWeather = function (currentData) {
         <p>Temp: ${currentData.temperature}°C</p>
         <p>Wind: ${currentData.wind}m/s</p>
         <p>Humidity: ${currentData.humidity}%</p>
-        <p>UV Index:<span class="bg" id="${uviClassName}">${currentData.uvi}</span></p>
+        <p>UV Index:<span class="bg ${uviClassName}">${currentData.uvi}</span></p>
         </div>
     </div>`;
 

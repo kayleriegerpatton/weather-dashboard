@@ -116,19 +116,29 @@ h3 {
   border-radius: 5px;
 }
 
-#low-UV {
+.low-UV {
   color: #ffffff;
-  background-color: green;
+  background-color: #4b9329;
 }
 
-#mod-UV {
+.mod-UV {
   color: rgb(0, 0, 0);
-  background-color: #ffd95b;
+  background-color: #f4e54c;
 }
 
-#high-UV {
+.high-UV {
   color: #ffffff;
-  background-color: #c40000;
+  background-color: #e6642a;
+}
+
+.very-high-UV {
+  color: #ffffff;
+  background-color: #c62a23;
+}
+
+.extreme-UV {
+  color: #ffffff;
+  background-color: #664ac1;
 }
 
 .forecasts-container {
