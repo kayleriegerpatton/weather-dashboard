@@ -5,7 +5,7 @@ const API_KEY = "5458002b60131eeab00c4853ceb6235b";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
 const weatherCardsContainer = $(".weather-containers");
 const currentWeatherContainer = $(".current-weather-container");
-const forecastMainContainer = $("forecast-main-container");
+const forecastMainContainer = $("#forecast-main-container");
 const forecastsContainer = $(".forecasts-container");
 
 const getCurrentData = function (name, forecastData) {
@@ -147,7 +147,7 @@ const renderForecast = function (forecastData) {
 
   const forecastCardsContainer = `<div><h3 id="forecast-heading">5-Day Forecast</h3><div class="forecasts-container">${forecastCards}<div/></div>`;
 
-  weatherCardsContainer.append(forecastCardsContainer);
+  forecastMainContainer.append(forecastCardsContainer);
 };
 
 const renderWeatherCards = function (weatherData) {
@@ -157,12 +157,19 @@ const renderWeatherCards = function (weatherData) {
 
 const storeCities = function (city) {
   // get cities from LS
-  const cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
+  let cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
 
   // if city isn't in LS
   if (!cities.includes(city)) {
     // add city to LS cities array
     cities.push(city);
+
+    // if (cities.length > 3) {
+    //   let recentCities = cities.slice(0, 4);
+    //   console.log(recentCities);
+    //   // set new city search in LS
+    //   localStorage.setItem("recentCities", JSON.stringify(recentCities));
+    // }
 
     // set new city search in LS
     localStorage.setItem("recentCities", JSON.stringify(cities));
