@@ -159,9 +159,12 @@ h3 {
     0deg,
     var(--indigo) 0%,
     var(--indigo) 35%,
-    rgba(255, 255, 255, 1) 100%
+    #ffffff 100%
   );
-  border-bottom: none;
+}
+
+.card {
+  border: none;
 }
 
 .card-img-top {
