@@ -5,6 +5,7 @@ const API_KEY = "5458002b60131eeab00c4853ceb6235b";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/";
 const weatherCardsContainer = $(".weather-containers");
 const currentWeatherContainer = $(".current-weather-container");
+const forecastMainContainer = $("forecast-main-container");
 const forecastsContainer = $(".forecasts-container");
 
 const getCurrentData = function (name, forecastData) {
@@ -44,34 +45,41 @@ const getWeatherData = async function (city) {
   // fetch current data
   const currentDataResponse = await fetch(currentDataUrl);
 
-  // validate city response from API
-  // if (currentDataResponse.status ! === 200){
+  //   validate city response from API
+  if (currentDataResponse.status !== 200) {
+    renderError();
 
-  // } else {
+    // get cities from LS
+    const cities = JSON.parse(localStorage.getItem("recentCities"));
 
-  // }
+    // remove most recent city
+    cities.pop();
 
-  const currentData = await currentDataResponse.json();
+    // set new array to LS
+    localStorage.setItem("recentCities", JSON.stringify(cities));
+  } else {
+    const currentData = await currentDataResponse.json();
 
-  // get values for URL
-  const lat = currentData.coord.lat;
-  const lon = currentData.coord.lon;
-  const name = currentData.name;
+    // get values for URL
+    const lat = currentData.coord.lat;
+    const lon = currentData.coord.lon;
+    const name = currentData.name;
 
-  // construct forecast URL
-  const forecastDataURL = `${BASE_URL}onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
+    // construct forecast URL
+    const forecastDataURL = `${BASE_URL}onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly,alerts&appid=${API_KEY}`;
 
-  // fetch forecast data
-  const forecastDataResponse = await fetch(forecastDataURL);
-  const forecastData = await forecastDataResponse.json();
+    // fetch forecast data
+    const forecastDataResponse = await fetch(forecastDataURL);
+    const forecastData = await forecastDataResponse.json();
 
-  const current = getCurrentData(name, forecastData);
-  const forecast = getForecastData(forecastData);
+    const current = getCurrentData(name, forecastData);
+    const forecast = getForecastData(forecastData);
 
-  return {
-    current: current,
-    forecast: forecast,
-  };
+    return {
+      current: current,
+      forecast: forecast,
+    };
+  }
 };
 
 const renderError = function () {
@@ -97,7 +105,7 @@ const renderCurrentWeather = function (currentData) {
   const uviClassName = getUVIClass(currentData);
 
   //   render current weather card
-  const currentWeather = `<h2>${currentData.name} | ${currentData.date}</h2>
+  const currentWeather = `<h2>${currentData.name}, ${currentData.date}</h2>
     <div class="current-weather-elements">
         <div>
         <img
@@ -118,7 +126,6 @@ const renderCurrentWeather = function (currentData) {
   currentWeatherContainer.append(currentWeather);
 };
 
-// FIX RENDER
 const renderForecast = function (forecastData) {
   const constructForecastCard = function (each) {
     return `<div class="card forecast-card" style="width: 10rem">
@@ -162,7 +169,7 @@ const storeCities = function (city) {
   }
 };
 
-const renderRecentSearches = function () {
+const renderRecentSearchList = function () {
   // get cities from LS
   const cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
 
@@ -174,6 +181,7 @@ const renderRecentSearches = function () {
   const constructSearchedCities = function (city) {
     // construct li element
     const searchedCityLi = `<li data-city=${city} class="list-group-item">${city}</li>`;
+
     // append to parent citiesContainer
     citiesContainer.append(searchedCityLi);
   };
@@ -199,7 +207,8 @@ const renderRecentSearches = function () {
 const renderWeatherInfo = async function (city) {
   const weatherData = await getWeatherData(city);
 
-  weatherCardsContainer.empty();
+  currentWeatherContainer.empty();
+  forecastMainContainer.empty();
 
   renderWeatherCards(weatherData);
 };
@@ -220,31 +229,7 @@ const onSearch = async function (event) {
 
     storeCities(city);
 
-    renderRecentSearches();
-
-    // // await data from API using city name
-    // const weatherData = await getWeatherData(city);
-
-    // //    clear any weather displayed
-    // currentWeatherContainer.empty();
-    // forecastsContainer.empty();
-
-    // // render weather cards with new data
-    // renderWeatherCards(weatherData);
-
-    // // get cities from LS
-    // const cities = jSON.parse(localStorage.getItem("recentCities")) ?? [];
-
-    // // if city does not exist, then push and setitem
-    // if (!cities.includes(cityName)) {
-    //   // insert cityName in cities
-    //   cities.push(cityName);
-
-    //   // set cities in LS
-    //   localStorage.setItem("recentCities", JSON.stringify(cities));
-    // }
-    // // render recent city searches
-    // renderRecentCities();
+    renderRecentSearchList();
   } else {
     //   render city search error
     renderError();
@@ -253,7 +238,7 @@ const onSearch = async function (event) {
 
 const onLoad = function () {
   //  render from LS
-  renderRecentSearches();
+  renderRecentSearchList();
 
   //   get cities from LS
   const cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
