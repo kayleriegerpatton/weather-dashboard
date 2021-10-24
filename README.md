@@ -27,7 +27,7 @@ THEN they are presented with the current and forecast weather conditions for tha
 
 ## Deployed Application
 
-[]()
+[GitHub Pages](https://kayleriegerpatton.github.io/weather-dashboard/)
 
 ## Built With
 
