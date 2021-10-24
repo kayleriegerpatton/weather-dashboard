@@ -52,9 +52,6 @@ const getWeatherData = async function (city) {
     // get cities from LS
     const cities = JSON.parse(localStorage.getItem("recentCities"));
 
-    // remove most recent city
-    cities.pop();
-
     // set new array to LS
     localStorage.setItem("recentCities", JSON.stringify(cities));
   } else {
@@ -108,7 +105,6 @@ const getUVIClass = function (currentData) {
 
 const renderCurrentWeather = function (currentData) {
   const uviClassName = getUVIClass(currentData);
-  console.log(uviClassName);
 
   //   render current weather card
   const currentWeather = `<h2>${currentData.name}, ${currentData.date}</h2>
@@ -163,19 +159,11 @@ const renderWeatherCards = function (weatherData) {
 
 const storeCities = function (city) {
   // get cities from LS
-  let cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
-
+  const cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
   // if city isn't in LS
   if (!cities.includes(city)) {
     // add city to LS cities array
     cities.push(city);
-
-    // if (cities.length > 3) {
-    //   let recentCities = cities.slice(0, 4);
-    //   console.log(recentCities);
-    //   // set new city search in LS
-    //   localStorage.setItem("recentCities", JSON.stringify(recentCities));
-    // }
 
     // set new city search in LS
     localStorage.setItem("recentCities", JSON.stringify(cities));
@@ -185,7 +173,6 @@ const storeCities = function (city) {
 const renderRecentSearchList = function () {
   // get cities from LS
   const cities = JSON.parse(localStorage.getItem("recentCities")) ?? [];
-
   // target search list container
   const citiesContainer = $(".list-group");
 
@@ -219,11 +206,14 @@ const renderRecentSearchList = function () {
 // render weather after click on recent city
 const renderWeatherInfo = async function (city) {
   const weatherData = await getWeatherData(city);
+  if (weatherData) {
+    currentWeatherContainer.empty();
+    forecastMainContainer.empty();
 
-  currentWeatherContainer.empty();
-  forecastMainContainer.empty();
+    renderWeatherCards(weatherData);
+  }
 
-  renderWeatherCards(weatherData);
+  return weatherData;
 };
 
 const onSearch = async function (event) {
@@ -238,9 +228,10 @@ const onSearch = async function (event) {
     if ($("#search-error").length) {
       $("#search-error").remove();
     }
-    renderWeatherInfo(city);
-
-    storeCities(city);
+    const weatherData = await renderWeatherInfo(city);
+    if (weatherData) {
+      storeCities(city);
+    }
 
     renderRecentSearchList();
   } else {
