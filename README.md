@@ -36,6 +36,10 @@ THEN they are presented with the current and forecast weather conditions for tha
 - Javascript
 - Open Weather One Call API
 
+## Questions
+
+If you have any questions about this application, please contact me by [email](mailto:kayle.patton22@gmail.com).
+
 ## Screenshots
 
 ### Desktop
